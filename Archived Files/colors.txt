@@ -1,0 +1,26 @@
+
+### COLORS ###
+
+orange = '#FF6C11'
+yellow = '#F9C80E'
+
+salmon = '#FF3864'
+pinkSalmon = '#FD3777'
+redSalmon = '#FD1D53'
+
+darkIndigo = '#261447'
+abyss = '#0D0221'
+dullAbyss = '#241734'
+
+fuschia1 = '#F706CF'
+fuschia2 = '#F6019D'
+fuschia3 = '#D40078'
+purple1 = '#920075'
+purple2 = '#650D89'
+purple3 = '#791E94'
+purple4 = '#541388' 
+
+cyan = '#2DE2E6'
+blue = '#023788'
+
+##############
