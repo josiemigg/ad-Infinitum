@@ -51,12 +51,13 @@ black = '#000000'
 
 
 class Player(object):
-    def __init__(self, x, y):
+    def __init__(self, x, y, app):
         self.x = x
         self.y = y
         self.xVel = 0
         self.yVel = 0
         self.jumpStrength = 5
+        self.xStrength = 5
 
         
         
@@ -65,7 +66,7 @@ class Player(object):
         self.outline = cyan
         self.gravityStrength = 0.4 # the lower the number, the lower the gravity, and the higher the player can jump!
         self.gravityMax = -7.5
-        self.xFriction = 0.25
+        self.xFriction = 1
         self.groundLvl = 600 # defines ground level. Temporary.
 
         self.canJump = True
@@ -76,7 +77,15 @@ class Player(object):
 
         
     
-    def updatePos(self):
+    def updatePos(self, app):
+        if "Right" in app.keysPressed and "Left" in app.keysPressed:
+            self.xVel = 0
+        elif "Right" in app.keysPressed:
+            self.xVel = self.xStrength
+        elif "Left" in app.keysPressed:
+            self.xVel = -self.xStrength
+
+
         self.x += self.xVel
         self.y -= self.yVel
         if self.xVel > 0: 
@@ -322,7 +331,7 @@ def playerDie(app):
 
 
 def appStarted(app):
-    app.p = Player(455, 560) # change these parameters to change the spawn position of player
+    app.p = Player(455, 560, app) # change these parameters to change the spawn position of player
     app.margin = 0
     app.mode = 'startScreenMode'
     app.difficulties = ['easy', 'normal', 'hard']
@@ -354,6 +363,9 @@ def appStarted(app):
     # Keys will be either 'easy', 'normal', or 'hard'
     # the value corresponding to the key will be a list/set containing
     # all chunks of that difficulty. (or filler as a rest from challenge)
+
+    # Used for smooth movement. Now anytime left/right is pressed down, player moves! Yay.
+    app.keysPressed = set()
 
     app.chunkDict['easy'] = [
 
@@ -591,7 +603,7 @@ def radio(app):
 def timerFired(app):
     
     if app.gameOver == False:
-        app.p.updatePos()
+        app.p.updatePos(app)
         app.p.gravity()
         # checkCollision(app) # comment out when XCollision and YCollision are written
 
@@ -740,9 +752,11 @@ def keyPressed(app, event):
     ### PLAYER MOVEMENT ###
     if app.gameOver == False:
         if event.key == "Right":
-            app.p.xVel = 5
+            # app.p.xVel = 5
+            app.keysPressed.add("Right")
         if event.key == "Left":
-            app.p.xVel = -5
+            # app.p.xVel = -5
+            app.keysPressed.add("Left")
         if event.key == "Up" or event.key == 'z':
             app.p.jump()
         if event.key == "Down":
@@ -765,6 +779,12 @@ def keyPressed(app, event):
     '''
     
 
+def keyReleased(app, event):
+    if app.gameOver == False:
+        if event.key == "Right":
+            app.keysPressed.remove("Right")
+        if event.key == "Left":
+            app.keysPressed.remove("Left")
             
 
 def mousePressed(app, event): # Toggles between ON and OFF
