@@ -536,6 +536,7 @@ def appStarted(app):
     app.gameOver = False
 
     app.image1 = app.loadImage('synth2.jpg')
+    app.image1 = ImageTk.PhotoImage(app.image1)
     app.songList = ['what we fight for.wav', '347 midnight demons.wav', 'hangem all.wav',
     'roller mobster.wav', 'le perv.wav', 'youre mine.wav']
     app.prevSong = None
@@ -561,7 +562,7 @@ def getSound(AudioFile):
 def playSound(sound):
     rawAudioData = sound.raw_data
     np_array = np.frombuffer(rawAudioData, dtype=np.int16)
-    wave_obj = sa.WaveObject(np_array, 2, 2, 44100)
+    wave_obj = sa.WaveObject(np_array, 2, 2, 48000)
     return wave_obj.play()
 
 def lengthSound(sound):
@@ -1234,7 +1235,7 @@ def drawGround(app, canvas):
 
 def drawBackground(app, canvas):
     if bgImageEnabled:
-        canvas.create_image(app.width/2, app.height/2, image=ImageTk.PhotoImage(app.image1))
+        canvas.create_image(app.width/2, app.height/2, image=app.image1)
     else:
         canvas.create_rectangle(0,0, app.width, app.height, fill = '#000000')
 
